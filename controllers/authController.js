@@ -15,9 +15,9 @@ exports.login = async function (req, res) {
     return res.status(400).json({ status: "fail", message: "Request body is required" });
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
 
   console.log(user);
 
@@ -25,7 +25,7 @@ exports.login = async function (req, res) {
   if (!verifiedPassword || !user) {
     return res.status(400).json({
       status: "fail",
-      message: "Invalid username or password",
+      message: "Invalid email or password",
     });
   }
 
@@ -46,12 +46,12 @@ exports.signup = async function (req, res) {
     return res.status(400).json({ status: "fail", message: "Request body is required" });
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
+  if (!email || !password) {
     return res.status(400).json({
       status: "fail",
-      message: "Missing username or password",
+      message: "Missing email or password",
     });
   }
 
