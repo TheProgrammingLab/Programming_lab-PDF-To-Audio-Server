@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/mongo/User");
 
 const { JWT_SECRET, JWT_SECRET_EXPIRY_TIME } = process.env;
-console.log(JWT_SECRET, JWT_SECRET_EXPIRY_TIME);
 
 function generateToken(id) {
   const token = jwt.sign({ id }, JWT_SECRET, { expiresIn: JWT_SECRET_EXPIRY_TIME });
@@ -16,7 +15,18 @@ exports.login = async function (req, res) {
 };
 
 exports.signup = async function (req, res) {
+  if (!req.body) {
+    return res.status(400).json({ status: "fail", message: "Request body is required" });
+  }
+
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Missing username or password",
+    });
+  }
 
   let user;
   try {
