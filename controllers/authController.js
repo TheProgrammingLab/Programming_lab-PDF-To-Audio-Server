@@ -11,7 +11,34 @@ function generateToken(id) {
 }
 
 exports.login = async function (req, res) {
+  if (!req.body) {
+    return res.status(400).json({ status: "fail", message: "Request body is required" });
+  }
+
   const { username, password } = req.body;
+
+  const user = await User.findOne({ username });
+
+  console.log(user);
+
+  const verifiedPassword = await bcrypt.compare(password, user.password);
+  if (!verifiedPassword || !user) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Invalid username or password",
+    });
+  }
+
+  const token = generateToken(user._id.toString());
+
+  res.status(200).json({
+    status: "success",
+    message: "login successful",
+    data: {
+      user,
+    },
+    token,
+  });
 };
 
 exports.signup = async function (req, res) {

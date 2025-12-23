@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
     required: [true, "Missing username"],
     trim: true,
     minlength: [1, "Username cannot be empty"],
+    unique: true,
+    trim: true,
   },
   password: {
     type: String,
