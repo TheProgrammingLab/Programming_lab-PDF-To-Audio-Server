@@ -68,7 +68,14 @@ exports.signup = async function (req, res) {
     console.log(user);
   } catch (err) {
     console.log(err);
+    if (err.errorResponse.code === 11000) {
+      res.status(400).json({
+        status: "fail",
+        message: "Email already exists on the server  ",
+      });
+    }
   }
+
   const token = generateToken(user._id.toString());
 
   res.status(201).json({
