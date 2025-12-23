@@ -59,7 +59,7 @@ exports.signup = async function (req, res) {
   try {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    user = await User.create({ username, password: hashedPassword });
+    user = await User.create({ email, password: hashedPassword });
     console.log(user);
   } catch (err) {
     console.log(err);
@@ -70,7 +70,7 @@ exports.signup = async function (req, res) {
     status: "success",
     message: "Account created",
     data: {
-      username,
+      user,
     },
     token,
   });
